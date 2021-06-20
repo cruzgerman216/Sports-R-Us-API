@@ -6,23 +6,23 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(user.save, true, "user can be saved with the appropriate keys")
   end
 
-  test "user cannot save without email" do
+  test "user cannot save without any info" do
     user = User.new
-    assert_equal(user.save, false, "cannot save without email")
+    assert_equal(user.save, false, "cannot save without any info")
   end
 
-  test "an emsil with space in front and back of email results to false" do
-    user = User.new(email: " test@test.com ")
+  test "an email with space in front and back of email results to false" do
+    user = User.new(username: "username", email: " test@test.com ")
     assert_equal(user.save, false, "user is saved")
   end
 
   test "Without an '@' is false" do
-    user = User.new(email: "testtest.com")
+    user = User.new(username: "username", email: "testtest.com")
     assert_equal(user.save, false, "user is saved")
   end
 
   test "Without a '.com' is false" do
-    user = User.new(email: "test@test")
+    user = User.new(username: "username",email: "test@test")
     assert_equal(user.save, false, "user is saved")
   end
 
@@ -32,14 +32,14 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "Username can't be more than 10" do
-    user = User.new(username: "12345678910111213",email:"test@test.com")
+    user = User.new(username: "usernameusername",email:"test@test.com")
     assert_equal(user.save, false, "username cannot be more than 10 characters")
   end
 
   test "Username can't be a duplicate" do
-    user = User.new(username: "12345678910111213",email:"test@test.com")
+    user = User.new(username: "username",email:"test@test.com")
     user.save 
-    user = User.new(username: "12345678910111213",email:"test@test.com")
+    user = User.new(username: "username",email:"test@test.com")
     assert_equal(user.save, false, "username cannot be duplicate")
   end
 
@@ -53,15 +53,16 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(user.save, false, "username cannot be empty string ever")
   end
 
-  test "should not save username without at least one letter" do
-    user = User.new(username: "111565",email:"test@test.com")
-
-    assert_equal(user.save, false, "username needs at least one letter")
-  end
 
   test "Username cannot have any special characters" do
     user = User.new(username: "user!@#",email:"test@test.com")
     assert_equal(user.save, false, "username cannot have any special characters")
+  end
+
+  test "should not save username without at least one letter" do
+    user = User.new(username: "123",email:"test@test.com")
+
+    assert_equal(user.save, false, "username needs at least one letter")
   end
 
 end
