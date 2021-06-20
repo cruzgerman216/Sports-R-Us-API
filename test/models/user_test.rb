@@ -42,4 +42,26 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(username: "12345678910111213",email:"test@test.com")
     assert_equal(user.save, false, "username cannot be duplicate")
   end
+
+  test "Username cannot be spaces" do
+    user = User.new(username: " rtrt  ",email:"test@test.com")
+    assert_equal(user.save, false, "username cannot be spaces")
+  end
+
+  test "Username cannot be an empty string" do
+    user = User.new(username: "",email:"test@test.com")
+    assert_equal(user.save, false, "username cannot be empty string ever")
+  end
+
+  test "should not save username without at least one letter" do
+    user = User.new(username: "111565",email:"test@test.com")
+
+    assert_equal(user.save, false, "username needs at least one letter")
+  end
+
+  test "Username cannot have any special characters" do
+    user = User.new(username: "user!@#",email:"test@test.com")
+    assert_equal(user.save, false, "username cannot have any special characters")
+  end
+
 end
