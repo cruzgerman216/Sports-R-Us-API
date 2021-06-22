@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   test "user can be saved" do
-    user = User.new(username: "username", email: "test@test.com", first_name: "first", last_name:"Last", password:"Password123!")
+    user = User.new(username: "username", email: "test@test.com", first_name: "first", last_name:"Last", password:"Password123!", state: "Utah")
     assert_equal(user.save, true, "user can be saved with the appropriate keys")
   end
 
@@ -109,4 +109,15 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(username: "username", email: "test@test.com", first_name: "first", last_name:"Last", password:"Abcdef123")
     assert_equal(user.save, false, "passwords require at least one symbol")
   end
+
+  test "should not contain a state with numbers" do
+    user = User.new(username: "username", email: "test@test.com", first_name: "first", last_name:"Last", password:"Abcdef123", state:"234")
+    assert_equal(user.save, false, "state name should not have numbers")
+  end
+
+  test "should not contain a state with less than 4 characters" do
+    user = User.new(username: "username", email: "test@test.com", first_name: "first", last_name:"Last", password:"Abcdef123", state:"uta")
+    assert_equal(user.save, false, "state name should not have numbers")
+  end
+
 end

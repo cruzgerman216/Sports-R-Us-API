@@ -5,7 +5,7 @@ class User < ApplicationRecord
     validates :first_name, :last_name, presence: true, length: {minimum: 1, maximum: 30}, format: { with: /\A[a-zA-Z]+\Z/ }
     validates :password, presence: true, length: {minimum: 5, maximum: 30}
     validate :bad_password
-    
+    validates :state, length: {minimum: 4, maximum: 30}, format: { with: /\A[a-zA-Z]+\Z/ }
     def username_needs_at_least_one_letter 
         if username && username.count("a-zA-Z") == 0
             errors.add(:username, "at least one letter")
@@ -25,5 +25,5 @@ class User < ApplicationRecord
             end
         end
     end
-    
+
 end
